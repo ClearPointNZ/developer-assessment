@@ -25,6 +25,6 @@ The front end functionality requires the following to be added:
 <br/>
 For both role types, remember that *maintainability and clarity* is key in your solution. 
 You are welcome to use comments in the code to outline any assumptions you might make and/or outline your thinking at various points.
-Once completed you can either push the completed solution to your own repo and send us the link or put the completed zip file/solution on some shared folder that we can get to.
+Once completed you can either push the completed solution to your own repo and send us the link.
 <br/><br/>
 We look forward to seeing your submission and have fun!
