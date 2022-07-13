@@ -1,3 +1,7 @@
+using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TodoList.Api.Mappings;
+using TodoList.Api.Validators;
+using TodoList.BusinessLayer.Commands;
+using TodoList.Data;
+using Validator = TodoList.BusinessLayer.Commands.UpdateTodoItem.UpdateTodoItemHandler;
 
 namespace TodoList.Api
 {
@@ -23,21 +32,31 @@ namespace TodoList.Api
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllHeaders",
-                      builder =>
-                      {
-                          builder.AllowAnyOrigin()
-                                 .AllowAnyHeader()
-                                 .AllowAnyMethod();
-                      });
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
             });
 
-            services.AddControllers();
+            services.AddMvc();
+            services.AddControllers(_ => { })
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                    s.DisableDataAnnotationsValidation = true;
+                });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoList.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "TodoList.Api", Version = "v1"});
             });
-
+            
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoItemsDB"));
+
+            services
+                .AddMediatR(typeof(CreateTodoItem).Assembly)
+                .AddAutoMapper(typeof(TodoItemsMappings).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,10 +77,7 @@ namespace TodoList.Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
