@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodoApp.Contexts
 {
-    public class TodoContext : DbContext, ITodoContext
+    public sealed class TodoContext : DbContext, ITodoContext
     {
         public TodoContext(DbContextOptions<TodoContext> options) 
             : base(options) { }
@@ -15,6 +15,11 @@ namespace TodoApp.Contexts
             TodoItems.Add(todo);
         }
 
+        public void Update(TodoItem todo)
+        {
+            base.Entry(todo).State = EntityState.Modified;
+        }
+
         public void Delete(TodoItem todo)
         {
             base.Entry(todo).State = EntityState.Deleted;
@@ -23,11 +28,6 @@ namespace TodoApp.Contexts
         public Task<int> SaveChangesAsync()
         {
             return base.SaveChangesAsync();
-        }
-
-        public void Update(TodoItem todo)
-        {
-            base.Entry(todo).State = EntityState.Modified;
         }
     }
 }

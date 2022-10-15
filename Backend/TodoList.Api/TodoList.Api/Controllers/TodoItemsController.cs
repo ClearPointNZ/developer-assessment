@@ -1,9 +1,7 @@
 ﻿using Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Services.Services;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TodoList.Api.Controllers
