@@ -1,6 +1,6 @@
 ﻿namespace Core.Models
 {
-    public class TodoItem
+    public record TodoItem
     {
         public Guid Id { get; set; }
 

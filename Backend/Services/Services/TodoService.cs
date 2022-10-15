@@ -15,25 +15,24 @@ namespace Services.Services
 
         public async Task Create(TodoItem item)
         {
-            _context.Create(item);
+            if(item != null)
+            {
+                _context.Create(item);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <exception cref="Exception"></exception>
         public async Task Delete(Guid id)
         {
-            var item = await Get(id);
-            
-            if(item == null) { throw new Exception(""); }
+            var item = await Get(id);          
 
-            _context.Delete(item);
+            if(item != null)
+            {
+                _context.Delete(item);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IList<TodoItem>> GetAll()
