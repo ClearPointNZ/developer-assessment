@@ -2,6 +2,7 @@
 using Moq;
 using Services.Services;
 using TodoApp.Contexts;
+using TodoApp.Exceptions;
 
 namespace Testings.Services
 {
@@ -15,9 +16,13 @@ namespace Testings.Services
         }
 
         [Fact]
-        public async Task Create_TodoItem_ShouldCreate()
+        public async Task Create_NewTodoItem_ShouldCreate()
         {
             // ARRANGE
+            _mockContext
+                .Setup(c => c.DescriptionExists(It.IsAny<string>()))
+                .ReturnsAsync(false);
+
             var todo = new TodoItem { Description = "test", IsCompleted = true };
 
             var sut = new TodoService(_mockContext.Object);
@@ -31,13 +36,50 @@ namespace Testings.Services
         }
 
         [Fact]
+        public async Task Create_ItemExists_ShouldThrowExistingDescriptionException()
+        {
+            // ARRANGE
+            _mockContext
+                .Setup(c => c.DescriptionExists(It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            var todo = new TodoItem { Description = "test", IsCompleted = true };
+
+            var sut = new TodoService(_mockContext.Object);
+
+            // ACT
+            await Assert.ThrowsAsync<ExistingDescriptionException>(() => sut.Create(todo));
+
+            // ASSERT
+            _mockContext.Verify(c => c.Create(It.Is<TodoItem>(item => item.Description == todo.Description && item.IsCompleted == todo.IsCompleted)), Times.Never);
+            _mockContext.Verify(c => c.SaveChangesAsync(), Times.Never);
+        }
+
+        [Fact]
         public async Task Create_NullTodoItem_ShouldNotCreate()
         {
             // ARRANGE
             var sut = new TodoService(_mockContext.Object);
 
             // ACT
-            await sut.Create(null);
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.Create(null));
+
+            // ASSERT
+            _mockContext.Verify(c => c.Create(It.IsAny<TodoItem>()), Times.Never);
+            _mockContext.Verify(c => c.SaveChangesAsync(), Times.Never);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task Create_EmptyOrWhiteStringTodoItemDescription_ShouldNotCreate(string description)
+        {
+            // ARRANGE
+            var sut = new TodoService(_mockContext.Object);
+
+            // ACT
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.Create(new TodoItem { Description = description}));
 
             // ASSERT
             _mockContext.Verify(c => c.Create(It.IsAny<TodoItem>()), Times.Never);

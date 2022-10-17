@@ -4,11 +4,11 @@ namespace Services.Services
 {
     public interface ITodoService
     {
-        Task<TodoItem?> Get(Guid id);
+        ValueTask<TodoItem?> Get(Guid id);
 
-        Task<IList<TodoItem>> GetAll();
+        Task<List<TodoItem>> GetAll();
 
-        Task Create(TodoItem item);
+        Task<TodoItem> Create(TodoItem item);
 
         Task Update(TodoItem item);
 

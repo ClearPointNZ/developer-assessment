@@ -12,5 +12,14 @@ namespace TodoApp.Extensions
             }
             return argument;
         }
+
+        public static T EnsureNotNull<T>(this T argument, [CallerArgumentExpression("parameter")] string? argumentName = null)
+        {
+            if(argument is null)
+            {
+                throw new ArgumentNullException(argumentName);
+            }
+            return argument;
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Contexts;
+using TodoApp.Exceptions;
+using TodoApp.Extensions;
 
 namespace Services.Services
 {
@@ -13,14 +15,23 @@ namespace Services.Services
             _context = context;
         }
 
-        public async Task Create(TodoItem item)
+        /// <exception cref="ExistingDescriptionException">If an item exists with the same description and is active</exception>
+        public async Task<TodoItem> Create(TodoItem item)
         {
-            if(item != null)
-            {
-                _context.Create(item);
+            item.EnsureNotNull();
 
-                await _context.SaveChangesAsync();
+            item.Description.EnsureNotNullOrWhiteSpace();
+
+            if (await _context.DescriptionExists(item.Description)) 
+            {
+                throw new ExistingDescriptionException();
             }
+
+            _context.Create(item);
+
+            await _context.SaveChangesAsync();
+
+            return item;
         }
 
         public async Task Delete(Guid id)
@@ -35,18 +46,18 @@ namespace Services.Services
             }
         }
 
-        public async Task<IList<TodoItem>> GetAll()
+        public Task<List<TodoItem>> GetAll()
         {
             // TODO consider pagination
-            return await _context
+            return _context
                 .TodoItems
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<TodoItem?> Get(Guid id)
+        public ValueTask<TodoItem?> Get(Guid id)
         {
-            return await _context.TodoItems.FindAsync(id);
+            return _context.TodoItems.FindAsync(id);
         }
 
         public async Task Update(TodoItem item)

@@ -29,5 +29,13 @@ namespace TodoApp.Contexts
         {
             return base.SaveChangesAsync();
         }
+
+        public Task<bool> DescriptionExists(string description)
+        {
+            return TodoItems.AnyAsync(
+                item =>
+                    item.Description.ToLowerInvariant() == description.ToLowerInvariant() &&
+                    !item.IsCompleted);
+        }
     }
 }
