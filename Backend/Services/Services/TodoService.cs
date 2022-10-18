@@ -55,9 +55,9 @@ namespace Services.Services
                 .ToListAsync();
         }
 
-        public ValueTask<TodoItem?> Get(Guid id)
+        public Task<TodoItem?> Get(Guid id)
         {
-            return _context.TodoItems.FindAsync(id);
+            return _context.Get(id);
         }
 
         public async Task Update(TodoItem item)

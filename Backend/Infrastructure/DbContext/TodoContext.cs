@@ -37,5 +37,10 @@ namespace TodoApp.Contexts
                     item.Description.ToLowerInvariant() == description.ToLowerInvariant() &&
                     !item.IsCompleted);
         }
+
+        public Task<TodoItem?> Get(Guid id)
+        {
+            return TodoItems.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }

@@ -16,5 +16,7 @@ namespace TodoApp.Contexts
         void Delete(TodoItem todo);
 
         Task<bool> DescriptionExists(string description);
+
+        Task<TodoItem?> Get(Guid id);
     }
 }

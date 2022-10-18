@@ -1,6 +1,9 @@
 ﻿using Core.Models;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Services.Services;
+using System;
+using System.Linq.Expressions;
 using TodoApp.Contexts;
 using TodoApp.Exceptions;
 
@@ -97,7 +100,7 @@ namespace Testings.Services
             };
 
             _mockContext
-                .Setup(c => c.TodoItems.FindAsync(It.IsAny<Guid>()))
+                .Setup(c => c.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(existingTodo);
 
             var sut = new TodoService(_mockContext.Object);
@@ -106,7 +109,7 @@ namespace Testings.Services
             await sut.Delete(existingTodo.Id);
 
             // ASSERT
-            _mockContext.Verify(c => c.TodoItems.FindAsync(It.Is<Guid>(id => id == existingTodo.Id)), Times.Once);
+            _mockContext.Verify(c => c.Get(It.Is<Guid>(id => id == existingTodo.Id)), Times.Once);
 
             _mockContext.Verify(c => c.Delete(It.Is<TodoItem>(
                 item =>
@@ -123,14 +126,14 @@ namespace Testings.Services
             var sut = new TodoService(_mockContext.Object);
 
             _mockContext
-                .Setup(c => c.TodoItems.FindAsync(It.IsAny<Guid>()))
+                .Setup(c => c.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(() => null);
 
             // ACT
             await sut.Delete(Guid.NewGuid());
 
             // ASSERT
-            _mockContext.Verify(c => c.TodoItems.FindAsync(It.IsAny<Guid>()), Times.Once);
+            _mockContext.Verify(c => c.Get(It.IsAny<Guid>()), Times.Once);
 
             _mockContext.Verify(c => c.Create(It.IsAny<TodoItem>()), Times.Never);
 
@@ -151,7 +154,7 @@ namespace Testings.Services
             };
 
             _mockContext
-                .Setup(c => c.TodoItems.FindAsync(It.IsAny<Guid>()))
+                .Setup(c => c.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(existingTodo);
 
             var sut = new TodoService(_mockContext.Object);
@@ -162,7 +165,7 @@ namespace Testings.Services
             await sut.Update(newTodo);
 
             // ASSERT
-            _mockContext.Verify(c => c.TodoItems.FindAsync(It.Is<Guid>(id => id == existingTodo.Id)), Times.Once);
+            _mockContext.Verify(c => c.Get(It.Is<Guid>(id => id == existingTodo.Id)), Times.Once);
 
             _mockContext.Verify(c => c.Update(It.Is<TodoItem>(
                 item =>
@@ -179,7 +182,7 @@ namespace Testings.Services
             // ARRANGE
 
             _mockContext
-                .Setup(c => c.TodoItems.FindAsync(It.IsAny<Guid>()))
+                .Setup(c => c.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(() => null);
 
             var sut = new TodoService(_mockContext.Object);
@@ -190,7 +193,7 @@ namespace Testings.Services
             await sut.Update(newTodo);
 
             // ASSERT
-            _mockContext.Verify(c => c.TodoItems.FindAsync(It.Is<Guid>(id => id == newTodo.Id)), Times.Once);
+            _mockContext.Verify(c => c.Get(It.Is<Guid>(id => id == newTodo.Id)), Times.Once);
 
             _mockContext.Verify(c => c.Update(It.IsAny<TodoItem>()), Times.Never);
 

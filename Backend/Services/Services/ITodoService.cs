@@ -4,7 +4,7 @@ namespace Services.Services
 {
     public interface ITodoService
     {
-        ValueTask<TodoItem?> Get(Guid id);
+        Task<TodoItem?> Get(Guid id);
 
         Task<List<TodoItem>> GetAll();
 
