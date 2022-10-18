@@ -1,41 +1,63 @@
 import React from 'react';
-import { Col, Collapse, Container, ListGroup, Row } from 'react-bootstrap';
+import {
+    HStack,
+    VStack,
+    Text,
+    StackDivider,
+  } from "@chakra-ui/react";
+
 import DeleteTodo from './DeleteTodo';
 import UpdateTodo from './UpdateTodo';
 
-const TodoList = ({list}) => {
+const TodoList = ({
+    todoList, 
+    updateTodo, 
+    deleteTodo,
+    toggleComplete}) => {
 
-    const markComplete = () => {
-        alert("mark completed");
+    const handleToggleComplete = (todo) => {
+        todo.isCompleted = !todo.isCompleted;
+        toggleComplete(todo);
     }
 
-    if(!list.length) {
+    if(!todoList.length) {
         return(
-            <>
-            <h1>Add a todo</h1>
-            </>
+            <Text fontSize='xl'>
+               Your Todo list is empty
+            </Text>
         )
     }
     return(
-        <Container>
-        <ListGroup>
-            {list.map((todo, i) => ( 
-                <Row key={i}>
-                    <Col xs={7}>                
-                    <ListGroup.Item
-                    key={todo.id}
-                    action={!todo.isCompleted}
-                    disabled={todo.isCompleted}
-                    onClick={markComplete}>
-                        {todo.description}
-                    </ListGroup.Item></Col>
-                    <Col xs={1}><UpdateTodo id={todo.id}/></Col>
-                    <Col xs={3}><DeleteTodo id={todo.id} completed={todo.isCompleted}/></Col>
-                </Row>         
-
+        <>
+            <VStack
+            divider={<StackDivider />}
+            borderColor='gray.100'
+            borderWidth='2px'
+            p='5'
+            borderRadius='lg'
+            w='100%'
+            maxW={{ base: "90vw", sm: "80vw", lg: "50vw", xl: "30vw" }}
+            alignItems='stretch'
+        >
+            {todoList.map((todo, i) => (
+            <HStack key={i}>
+                <Text
+                opacity={todo.isCompleted === true ? "0.2" : "1"}
+                w='100%'
+                p='8px'
+                borderRadius='lg'
+                as={todo.isCompleted === true ? "del" : ""}
+                cursor="pointer"
+                onClick={() => handleToggleComplete(todo)}
+                >
+                {todo.description}
+                </Text>
+                <UpdateTodo todo={todo} updateTodo={updateTodo}/>
+                <DeleteTodo todo={todo} deleteTodo={deleteTodo} />
+            </HStack>
             ))}
-        </ListGroup>
-        </Container>
+        </VStack>
+        </>
     )
 };
 
