@@ -1,0 +1,56 @@
+name: developer-assessment CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - "*"
+
+env:
+  DOTNET_VERSION: "6.0.x"
+  NODE_VERSION: "16"
+
+jobs:
+  backend-dotnet-app:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Backend/TodoList.Api
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: Running some commands
+        run: |
+          pwd
+          ls
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+
+  frontend-react-app:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Frontend
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+      - name: Install modules
+        run: npm ci
+      - name: Test
+        run: npm run test
+      - name: Build
+        run: |
+          unset CI
+          npm run build
