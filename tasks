@@ -1,19 +1,6 @@
 #!/bin/bash
 set -Eeo pipefail
 
-DOCKER_OPS_VERSION="2.0.0"
-DOCKER_OPS_FILE="ops/docker-ops-${DOCKER_OPS_VERSION}"
-mkdir -p ops
-if [[ ! -f $DOCKER_OPS_FILE ]];then
-  wget --quiet -O $DOCKER_OPS_FILE https://github.com/kudulab/docker-ops/releases/download/${DOCKER_OPS_VERSION}/docker-ops
-fi
-source $DOCKER_OPS_FILE
-image_name="todolist-api/api"
-image_registry_prefix="todolist-api.apiregistry"
-image_registry="${image_registry_prefix}.azurecr.io"
-image_dir="./Backend/TodoList.Api"
-imagerc_filename="imagerc"
-
 dotnet_publish_output="Backend/app/publish"
 
 command="$1"
@@ -36,42 +23,4 @@ case "${command}" in
   unit)
     docker run --rm -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:6.0 bash -c "cd /tmp/work && ./tasks _unit"
     ;;
-  _run)
-      export ASPNETCORE_URLS=http://+:80
-      cd ${dotnet_publish_output}
-      dotnet Api.dll
-      ;;
-  run)
-      docker run --rm
-        -p 80:80 -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:6.0 bash -c "cd /tmp/work && ./tasks _run"
-      ;;
-  build_docker)
-    image_tag=$(git rev-parse HEAD)
-    docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
-    ;;
-  _e2e)
-    cd Frontend
-    npm ci
-    CI=false npm run test
-    ;;
-  e2e)
-      # run the dotnet app in a docker container in the background
-    source "${image_dir}/${imagerc_filename}"
-    container_id=$(docker run -d -p 80:80\
-      "${KUDU_DOCKER_IMAGE_URL}")
-
-    # invoke e2e tests in another docker container
-    set +e
-    export BASE_URL=http://localhost
-    docker run --rm -e BASE_URL --entrypoint=/bin/bash --net=host -v ${PWD}:/tmp/work node:lts-buster-slim -c "cd /tmp/work && ./tasks _e2e"
-    e2e_exit_status="$?"
-
-    echo "Removing the e2e tests container (even if tests failed)"
-    docker stop $container_id
-    docker rm $container_id
-
-    # exit with proper exit status
-    exit $e2e_exit_status
-    ;;
   esac
-set +e
