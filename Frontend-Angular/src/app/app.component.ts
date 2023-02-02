@@ -13,19 +13,11 @@ export class AppComponent {
   public constructor(private httpClient: HttpClient) {}
 
   getItems() {
-    try {
-      alert('todo');
-    } catch (error) {
-      console.error(error);
-    }
+    alert('todo');
   }
 
   handleAdd() {
-    try {
-      alert('todo');
-    } catch (error) {
-      console.error(error);
-    }
+    alert('todo');
   }
 
   handleClear() {
@@ -33,10 +25,6 @@ export class AppComponent {
   }
 
   handleMarkAsComplete(item: any) {
-    try {
-      alert('todo');
-    } catch (error) {
-      console.error(error);
-    }
+    alert('todo');
   }
 }
