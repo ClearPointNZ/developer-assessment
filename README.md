@@ -4,7 +4,9 @@ This repository contains code used in the interview process for developers joini
 
 There are two parts to this solution and depending on the type of role you are applying for you will be asked to contribute to one or both areas.
 The application is a simple to-do list that allows a user to create items in a list and mark them as complete.
-It is a React-based front end application that uses a Microsoft Web API at the backend to facilitate using and persisting items in this to-do list.
+The front end application uses a Microsoft Web API at the backend to facilitate using and persisting items in this to-do list.
+
+The repository includes React-based **Frontend** as well as Angular-based **Frontend-angular** front end application. You can choose any one of the framework to implement your changes.
 <br/><br/>
 
 ## FOR THOSE APPLYING FOR A BACK-END DEVELOPER ROLE
