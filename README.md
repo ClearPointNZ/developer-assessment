@@ -8,13 +8,13 @@ The front end application uses a Microsoft Web API at the backend to facilitate 
 The repository includes a **React-based** as well as an **Angular-based** front end application. You can choose either of these frameworks to implement your changes.
 <br/>
 
-You are required to make changes to both the front end and back end.
+You are required to make changes to **both** the front end and back end.
 
-The back end functionality requires the following to be added:
+**The back end functionality requires the following to be added:**
 
 You are asked to refactor the back end code in this solution. This code is in the Backend folder. You are free to make changes as and where you see fit. Think about how you might structure the solution, add appropriate tests using a framework of your choice, and leave the solution in a more maintainable and more easily understood state than it was originally.
 
-The front end functionality requires the following to be added:
+**The front end functionality requires the following to be added:**
 
 1. The ability to surface any errors from the backend API in the UI
 2. The ability to mark an item in the to-do list as complete
