@@ -5,7 +5,7 @@ This repository contains code used in the interview process for developers joini
 The application is a simple to-do list that allows a user to create items in a list and mark them as complete.
 The front end application uses a Microsoft Web API at the backend to facilitate using and persisting items in this to-do list.
 
-The repository includes React-based **Frontend** as well as Angular-based **Frontend-angular** front end application. You can choose any one of the framework to implement your changes.
+The repository includes a **React-based** as well as an **Angular-based** front end application. You can choose either of these frameworks to implement your changes.
 <br/>
 
 You are required to make changes to both the front end and back end.
