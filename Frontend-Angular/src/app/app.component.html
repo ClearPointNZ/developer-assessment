@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img
+        src="/assets/images/clearPointLogo.png"
+        alt="ClearPoint"
+        class="img-fluid rounded"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div role="alert" class="fade alert alert-success show">
+        <div class="alert-heading h4">Todo List App (Angular)</div>
+        Welcome to the ClearPoint frontend technical test. We like to keep
+        things simple, yet clean so your task(s) are as follows:<br /><br />
+
+        <ol class="list-left text-left">
+          <li>
+            Add the ability to add (POST) a Todo Item by calling the backend API
+          </li>
+          <li>
+            Display (GET) all the current Todo Items in the below grid and
+            display them in any order you wish
+          </li>
+          <li>
+            Bonus points for completing the 'Mark as completed' button code for
+            allowing users to update and mark a specific Todo Item as completed
+            and for displaying any relevant validation errors/ messages from the
+            API in the UI
+          </li>
+          <li>
+            Feel free to add unit tests and refactor the component(s) as best
+            you see fit
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="container">
+        <h1>Add Item</h1>
+        <div class="mb-3 row">
+          <label
+            for="formAddTodoItem"
+            class="form-label col-form-label col-sm-2"
+            >Description</label
+          >
+          <div class="col-md-6">
+            <input
+              placeholder="Enter description..."
+              type="text"
+              id="formAddTodoItem"
+              class="form-control"
+              [(ngModel)]="description"
+            />
+          </div>
+        </div>
+        <div class="mb-3 offset-md-2 row">
+          <div class="hstack gap-2">
+            <button type="button" class="btn btn-primary" (click)="handleAdd()">
+              Add Item
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="handleClear()"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h1>
+          Showing {{ items.length }} Item(s)
+          <button
+            type="button"
+            class="pull-right btn btn-primary"
+            (click)="getItems()"
+          >
+            Refresh
+          </button>
+        </h1>
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ item.id }}</td>
+              <td>{{ item.description }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-warning btn-sm"
+                  (click)="handleMarkAsComplete(item)"
+                >
+                  Mark as completed
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      © 2021 Copyright:
+      <a href="https://clearpoint.digital" target="_blank" rel="noreferrer">
+        clearpoint.digital
+      </a>
+    </div>
+  </div>
+</div>
