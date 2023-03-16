@@ -1,0 +1,26 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - "*"
+      # ignore all tags https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-excluding-branches-and-tags
+    tags-ignore:
+      - "*"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Running bash script
+        run: ./tasks build
+  unit-tests:
+    name: "Unit Tests"  
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./tasks unit
