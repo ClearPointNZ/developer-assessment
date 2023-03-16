@@ -10,13 +10,15 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Running bash script
         run: ./tasks build
-  unit:
+  unit-tests:
+    name: "Unit Tests"  
     runs-on: ubuntu-latest
     needs: [build]
     steps:
