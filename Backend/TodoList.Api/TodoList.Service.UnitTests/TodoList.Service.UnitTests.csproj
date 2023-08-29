@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoList.Api\TodoList.Api.csproj" />
+    <ProjectReference Include="..\TodoList.Service\TodoList.Service.csproj" />
+    <ProjectReference Include="..\TodoList.Testing\TodoList.Testing.csproj" />
   </ItemGroup>
 
 </Project>
