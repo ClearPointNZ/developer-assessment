@@ -51,6 +51,8 @@ namespace TodoList.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoList.Api v1"));
             }
 
+            app.UseMiddleware<ErrorHandleMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
