@@ -15,12 +15,13 @@ case "${command}" in
       set -x; dotnet publish -c Release -r "${operating_system}" --self-contained false -o ${dotnet_publish_output} Backend/TodoList.Api/TodoList.Api.sln
       ;;
   build)
-    docker run --rm -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:6.0 bash -c "cd /tmp/work && ./tasks _build"
+    docker run --rm -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:7.0 bash -c "cd /tmp/work && ./tasks _build"
     ;;
   _unit)
-    dotnet test -c Debug -v minimal Backend/TodoList.Api/TodoList.Api.UnitTests/
+    dotnet test -c Debug -v minimal Backend/TodoList.Api/TodoList.Infrastructure.UnitTests/
+    dotnet test -c Debug -v minimal Backend/TodoList.Api/TodoList.Service.UnitTests/
     ;;
   unit)
-    docker run --rm -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:6.0 bash -c "cd /tmp/work && ./tasks _unit"
+    docker run --rm -v ${PWD}:/tmp/work mcr.microsoft.com/dotnet/sdk:7.0 bash -c "cd /tmp/work && ./tasks _unit"
     ;;
   esac
