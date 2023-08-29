@@ -59,8 +59,11 @@
         </div>
         <div class="mb-3 offset-md-2 row">
           <div class="hstack gap-2">
-            <button type="button" class="btn btn-primary" (click)="handleAdd()">
+            <button id="add_button" *ngIf="!itemInEditing" type="button" class="btn btn-primary" (click)="handleAdd()">
               Add Item
+            </button>
+            <button *ngIf="itemInEditing" type="button" class="btn btn-primary" (click)="handleUpdate()">
+              Update Item
             </button>
             <button
               type="button"
@@ -98,13 +101,22 @@
               <td>{{ item.id }}</td>
               <td>{{ item.description }}</td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  (click)="handleMarkAsComplete(item)"
-                >
-                  Mark as completed
-                </button>
+                <div class="hstack gap-2">
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    (click)="handleMarkAsComplete(item)"
+                  >
+                    Mark as completed
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    (click)="handleEdit(item)"
+                  >
+                    Edit
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
