@@ -1,32 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using TodoList.Domain.Entities;
+using TodoList.Infrastructure.Persistence.EFCore.Repositories;
 
 namespace TodoList.Infrastructure.Persistence.EFCore.UnitTests.RepositoriesTests.TodoListRepositoryTests
 {
     public class CreateTodoItemTests
     {
         [Fact]
-        public async Task CreateTodoItem_Should_Add_Item_To_Context()
+        public async Task ShoudlCreateAnItemWhenCalled()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<TodoListContext>()
-                .UseInMemoryDatabase(databaseName: "CreateTodoItem_Database")
+                .UseInMemoryDatabase(databaseName: "CreateTodoItemDatabase")
                 .Options;
+            var id = Guid.NewGuid();
+            var description = "Test";
 
             using (var context = new TodoListContext(options))
             {
                 var repository = new TodoListRepository(context);
-                var item = new TodoItem { /* Initialize your item properties */ };
+                var item = new TodoItem { Id = id, Description = description };
 
                 // Act
                 await repository.CreateTodoItem(item, CancellationToken.None);
 
                 // Assert
-                Assert.Single(context.TodoItems);
+                var items = context.TodoItems;
+                Assert.Single(items);
+                Assert.Equal(id, items.First().Id);
+                Assert.Equal(description, items.First().Description);
             }
         }
     }

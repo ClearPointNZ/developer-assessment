@@ -17,4 +17,9 @@
     <ProjectReference Include="..\TodoList.Services\TodoList.Services.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>TodoList.Infrastructure.Application.Services.UnitTests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 </Project>

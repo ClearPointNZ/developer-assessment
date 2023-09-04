@@ -15,12 +15,10 @@ namespace TodoList.Api.Controllers
     [ApiController]
     public class TodoItemsController : ApiControllerBase
     {
-        private readonly ILogger<TodoItemsController> logger;
         private readonly ITodoListService todoListService;
 
-        public TodoItemsController(ILogger<TodoItemsController> logger, ITodoListService todoListService)
+        public TodoItemsController(ITodoListService todoListService)
         {
-            this.logger = logger;
             this.todoListService = todoListService;
         }
 
@@ -55,7 +53,7 @@ namespace TodoList.Api.Controllers
                 return CreatedAtAction(nameof(GetTodoItem), new { id = result.Result.Id }, result.Result);
             }
 
-            return BadRequest(result.Errors);
+            return BadRequest(result.Message);
 
         }
 

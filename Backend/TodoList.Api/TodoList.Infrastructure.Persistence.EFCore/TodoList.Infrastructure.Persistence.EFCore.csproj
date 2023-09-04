@@ -17,6 +17,8 @@
 		<ProjectReference Include="..\TodoList.Domain\TodoList.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<InternalsVisibleTo Include="TodoList.Infrastructure.Persistence.EFCore.UnitTests" />
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>TodoList.Infrastructure.Persistence.EFCore.UnitTests</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 </Project>
