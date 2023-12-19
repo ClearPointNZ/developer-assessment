@@ -2,7 +2,7 @@ import './App.css'
 import { Image, Alert, Button, Container, Row, Col, Form, Table, Stack } from 'react-bootstrap'
 import React, { useState, useEffect } from 'react'
 
-const axios = require('axios')
+import axios from 'axios'
 
 const App = () => {
   const [description, setDescription] = useState('')
