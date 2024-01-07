@@ -1,0 +1,28 @@
+@url = https://localhost:7280/api/v1/todos
+@todoId = {{todo.response.body.$.id}}
+
+
+### Get Todo by Id
+GET {{url}}/{{todoId}}
+
+### Get Todos
+GET {{url}}?showCompleted=true
+
+### Create Todo
+# @name todo
+POST {{url}}
+Content-Type: application/json
+
+{
+    "description": "Something to do",
+    "isCompleted": false
+}
+
+### Update Todo
+PUT {{url}}/{{todoId}}
+Content-Type: application/json
+
+{
+    "description": "Something else to do",
+    "isCompleted": true
+}
