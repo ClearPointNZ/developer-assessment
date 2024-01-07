@@ -21,7 +21,8 @@ const AddTodo = ({ description, setDescription, addTodo }: AddTodoProps) => {
 
   const handleAddTodo = () => {
     setIsDescriptionValidated(true)
-    if (description.length > 0) {
+
+    if (description.length >= 3 && description.length <= 1000) {
       setIsDescriptionValidated(false)
       addTodoWithDebounce()
     }
@@ -46,11 +47,13 @@ const AddTodo = ({ description, setDescription, addTodo }: AddTodoProps) => {
                 type="text"
                 placeholder="Enter description..."
                 value={description}
-                isInvalid={isDescriptionValidated && description.length === 0}
+                minLength={3}
+                maxLength={1000}
+                isInvalid={isDescriptionValidated && (description.length < 3 || description.length > 1000)}
                 onChange={handleOnChange}
               />
               <Form.Control.Feedback className="text-start" type="invalid">
-                Please add a description
+                Please add a description between 3 and 1000 characters long
               </Form.Control.Feedback>
             </Col>
           </Form.Group>

@@ -63,7 +63,7 @@ describe('AddTodo', () => {
     fireEvent.click(addButton)
 
     // Assert
-    const errorMessage = screen.getByText('Please add a description')
+    const errorMessage = screen.getByText('Please add a description between 3 and 1000 characters long')
     expect(errorMessage).toBeInTheDocument()
   })
 })
